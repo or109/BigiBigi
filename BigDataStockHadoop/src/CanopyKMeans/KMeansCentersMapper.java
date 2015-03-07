@@ -11,8 +11,7 @@ import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class KMeansCentersMapper extends
-		Mapper<LongWritable, Text, Vector, Vector> {
+public class KMeansCentersMapper extends Mapper<LongWritable, Text, Vector, Vector> {
 
 	ArrayList<Vector> centers = new ArrayList<Vector>();
 
@@ -26,11 +25,8 @@ public class KMeansCentersMapper extends
 		FileSystem fs = FileSystem.get(conf);
 
 		@SuppressWarnings("deprecation")
-		SequenceFile.Reader reader = new SequenceFile.Reader(fs, canopyCenters,
-				conf);
-		// org.apache.hadoop.io.ArrayFile.Reader reader = new
-		// org.apache.hadoop.io.ArrayFile.Reader(fs, canopyCenters.toString(),
-		// conf);
+		SequenceFile.Reader reader = new SequenceFile.Reader(fs, canopyCenters, conf);
+		
 		Vector key = new Vector();
 		Vector value = new Vector();
 
