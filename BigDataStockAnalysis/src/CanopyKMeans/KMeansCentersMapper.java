@@ -27,6 +27,7 @@ public class KMeansCentersMapper extends
 
 		@SuppressWarnings("deprecation")
 		SequenceFile.Reader reader = new SequenceFile.Reader(fs, canopyCenters,	conf);
+		//org.apache.hadoop.io.ArrayFile.Reader reader = new org.apache.hadoop.io.ArrayFile.Reader(fs, canopyCenters.toString(),	conf);
 		Vector key = new Vector();
 		Vector value = new Vector();
 		
