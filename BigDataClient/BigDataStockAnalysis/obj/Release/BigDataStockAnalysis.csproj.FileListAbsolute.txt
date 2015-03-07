@@ -13,3 +13,15 @@ C:\BigDataProject\BigData\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.
 C:\Users\MANTZ\Documents\63ad88d3c11d700cd7f3e77df727faf441e1da5d\BigDataStockAnalysis\bin\Release\BigDataStockAnalysis.exe.config
 C:\Users\MANTZ\Documents\63ad88d3c11d700cd7f3e77df727faf441e1da5d\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.exe
 C:\Users\MANTZ\Documents\63ad88d3c11d700cd7f3e77df727faf441e1da5d\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.pdb
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\bin\Release\BigDataStockAnalysis.exe.config
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.exe
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.pdb
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\bin\Release\BigDataStockAnalysis.exe
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\bin\Release\BigDataStockAnalysis.pdb
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.csprojResolveAssemblyReference.cache
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.BigDataForm.resources
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.Properties.Resources.resources
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.StockReportForm.resources
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\BigDataStockAnalysis.csproj.GenerateResource.Cache
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\RdlCompile.cache
+C:\BigDataProject\WTFF\BigiBigi\BigDataClient\BigDataStockAnalysis\obj\Release\RdlCompile.compiled

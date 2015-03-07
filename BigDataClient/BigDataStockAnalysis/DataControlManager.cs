@@ -74,6 +74,7 @@ namespace BigDataStockAnalysis
                 OpenConnecion();
 
                 SshCommand sshCmd;
+                string strOutput;
                 sshCmd = sshClient.RunCommand("mkdir " + CLOUDERA_PATH);
                 scpClient.Upload(new DirectoryInfo(INPUT_WIN_PATH), CLOUDERA_PATH + "/" + INPUT_CLOUDERA_FOLDER);
                 sshCmd = sshClient.RunCommand("hadoop fs -mkdir " + hadoopInputFolder);
@@ -83,11 +84,11 @@ namespace BigDataStockAnalysis
                 sshCmd = sshClient.RunCommand("javac -cp " + CLOUDERA_COMPILED_CLASS_PATH + " -d " +
                             classLinuxPath + " " + CLOUDERA_PATH + "/" + JAVA_CLOUDERA_FOLDER + "/*");
                 sshCmd = sshClient.RunCommand("jar -cvf " + CLOUDERA_PATH + "/" + JAR_NAME + " -C " + classLinuxPath + "/ .");
-                sshCmd = sshClient.RunCommand("hadoop jar " + CLOUDERA_PATH + "/" + JAR_NAME + " " + PACKAGE_NAME + "." + JAVA_MAIN_CLASS_NAME
+                strOutput = runCmd("hadoop jar " + CLOUDERA_PATH + "/" + JAR_NAME + " " + PACKAGE_NAME + "." + JAVA_MAIN_CLASS_NAME
                                          + " " + MAP_REDUCE_FOLDER + " " + clusterNum + " " + RADIOS + " " + stkNum);
                 sshCmd = sshClient.RunCommand("mkdir " + CLOUDERA_PATH + "/" + CLOUDERA_OUTPUT_FOLDER);
                 sshCmd = sshClient.RunCommand("hadoop fs -get " + hadoopOutputFolder + "/part-r-00000 " + CLOUDERA_PATH + "/" + CLOUDERA_OUTPUT_FOLDER + "/");
-
+                
                 bool isOutputExits = true;
                 while (isOutputExits)
                 {
@@ -98,13 +99,20 @@ namespace BigDataStockAnalysis
 
                 scpClient.Download(CLOUDERA_PATH + "/" + CLOUDERA_OUTPUT_FOLDER + "/part-r-00000", new FileInfo(WIN_OUTPUT_PATH + "\\part-r-00000.txt"));
 
-                // Cloes the conection
                 CloseConnection();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private string runCmd(string cmd)
+        {
+            SshCommand sshCmd;
+            sshCmd = sshClient.RunCommand(cmd);
+
+            return sshCmd.Result;
         }
 
         public void CleanFilesInHost(string p_strHost, string p_strUserName, string p_strPassword)
