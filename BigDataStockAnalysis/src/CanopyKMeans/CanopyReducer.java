@@ -20,7 +20,7 @@ public class CanopyReducer extends
 			boolean isInCluster = false;
 			
 			for (Vector currCenter : centers) {
-				if (currCenter.measureDistance(key) <= Integer.parseInt(context.getConfiguration().get("radius"))) {
+				if (currCenter.measureDistance(key) <= Integer.parseInt(context.getConfiguration().get("radios"))) {
 					isInCluster = true;
 					break;
 				}

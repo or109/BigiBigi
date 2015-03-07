@@ -18,9 +18,10 @@ public class CanopyKMeansJob extends Configured implements Tool {
 	{
 		String basePath = args[0];
 		Configuration conf = new Configuration();
+		Job job;
 
 		conf.set("k", args[1]);
-		conf.set("radius", args[2]);
+		conf.set("radios", args[2]);
 		conf.set("total.stocks", args[3]);
 		
 		Path vectors = new Path(basePath + "/input");
@@ -41,7 +42,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 		if (fs.exists(out))
 			fs.delete(out, true);
 		
-		Job job = new Job(conf);
+		job = new Job(conf);
 		job.setJobName("Canopy Centers");
 		job.setJarByClass(CanopyKMeansJob.class);
 
@@ -58,7 +59,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		job.setNumReduceTasks(1);
 		
-		job.waitForCompletion(true);		
+		job.waitForCompletion(true);	
 		
 		job = new Job(conf);
 		job.setJobName("KMeans Centers");

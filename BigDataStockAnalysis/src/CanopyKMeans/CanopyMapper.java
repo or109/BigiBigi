@@ -24,8 +24,11 @@ public class CanopyMapper extends
 			boolean isInCluster = false;
 			
 			for (Vector currCenter : centers) {
-				if (currCenter.measureDistance(stock) <= Integer.parseInt(context.getConfiguration().get("radius"))) {
+				if (currCenter.measureDistance(stock) <= Integer.parseInt(context.getConfiguration().get("radios"))) {						
+					centers.add(new Vector(stock));
+					context.write(new Vector(currCenter), new Vector(stock));					
 					isInCluster = true;
+					
 					break;
 				}
 			}
