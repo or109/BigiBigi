@@ -149,13 +149,11 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		job.waitForCompletion(true);
 
-		boolean success = job.waitForCompletion(true);
-		return success ? 0 : 1;
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
 
 	public static void main(String[] args) throws Exception {
-		CanopyKMeansJob driver = new CanopyKMeansJob();
-		int exitCode = ToolRunner.run(driver, args);
+		int exitCode = ToolRunner.run(new CanopyKMeansJob(), args);
 		System.exit(exitCode);
 	}
 }
