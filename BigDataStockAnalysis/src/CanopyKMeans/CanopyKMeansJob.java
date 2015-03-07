@@ -15,6 +15,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 	@Override
 	public int run(String[] args) throws Exception {
+		// Prepare and clean environment
 		String basePath = args[0];
 		Configuration conf = new Configuration();
 		Job job;
@@ -25,24 +26,25 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		Path vectors = new Path(basePath + "/input");
 		Path canopyCenters = new Path(basePath + "/canopycenters");
+		Path kMeansCentroids = new Path(basePath + "/kmeanscentroids");
+		Path out = new Path(basePath + "/clusters");
+		
 		conf.set("canopy.centers.path", canopyCenters.toString()
 				+ "/part-r-00000");
-		Path kMeansCentroids = new Path(basePath + "/kmeanscentroids");
 		conf.set("kmeans.centroids.path", kMeansCentroids.toString()
 				+ "/part-r-00000");
-		Path out = new Path(basePath + "/clusters");
+		
 
 		FileSystem fs = FileSystem.get(conf);
 
 		if (fs.exists(canopyCenters))
 			fs.delete(canopyCenters, true);
-
 		if (fs.exists(kMeansCentroids))
 			fs.delete(kMeansCentroids, true);
-
 		if (fs.exists(out))
 			fs.delete(out, true);
 
+		// Prepare and start job #1 - Canopy Centers
 		job = new Job(conf);
 		job.setJobName("Canopy Centers");
 		job.setJarByClass(CanopyKMeansJob.class);
@@ -52,16 +54,16 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		SequenceFileInputFormat.addInputPath(job, vectors);
 		SequenceFileOutputFormat.setOutputPath(job, canopyCenters);
-
+		
 		job.setOutputFormatClass(SequenceFileOutputFormat.class);
-
 		job.setOutputKeyClass(Vector.class);
 		job.setOutputValueClass(Vector.class);
-
+		
 		job.setNumReduceTasks(1);
 
 		job.waitForCompletion(true);
 
+		// Prepare and start job #2 - KMeans Centers
 		job = new Job(conf);
 		job.setJobName("KMeans Centers");
 		job.setJarByClass(CanopyKMeansJob.class);
@@ -81,6 +83,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		job.waitForCompletion(true);
 
+		// Prepare and start job #3 - KMeans Clustering (K iterations)
 		int iteration = 1;
 		int counter = 0;
 
@@ -130,6 +133,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 		if (fs.exists(out))
 			fs.delete(out, true);
 
+		// Prepare and start job #4 - KMeans Output
 		job = new Job(conf);
 		job.setJobName("KMeans Output");
 		job.setJarByClass(CanopyKMeansJob.class);
