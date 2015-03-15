@@ -21,7 +21,7 @@ public class KMeansMapper extends Mapper<LongWritable, Text, Centroid, Stock> {
 		super.setup(context);
 
 		Configuration conf = context.getConfiguration();
-		Path centroidsPath = new Path(conf.get("kmeans.centroids.path"));
+		Path centroidsPath = new Path(conf.get("canopy.centers.path"));
 		FileSystem fs = FileSystem.get(conf);
 
 		@SuppressWarnings("deprecation")

@@ -26,21 +26,15 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		Path vectors = new Path(basePath + "/input");
 		Path canopyCenters = new Path(basePath + "/canopycenters");
-		Path kMeansCentroids = new Path(basePath + "/kmeanscentroids");
 		Path out = new Path(basePath + "/clusters");
 		
 		conf.set("canopy.centers.path", canopyCenters.toString()
 				+ "/part-r-00000");
-		conf.set("kmeans.centroids.path", kMeansCentroids.toString()
-				+ "/part-r-00000");
-		
 
 		FileSystem fs = FileSystem.get(conf);
 
 		if (fs.exists(canopyCenters))
 			fs.delete(canopyCenters, true);
-		if (fs.exists(kMeansCentroids))
-			fs.delete(kMeansCentroids, true);
 		if (fs.exists(out))
 			fs.delete(out, true);
 
@@ -63,27 +57,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 
 		job.waitForCompletion(true);
 
-		// Prepare and start job #2 - KMeans Centers
-		job = new Job(conf);
-		job.setJobName("KMeans Centers");
-		job.setJarByClass(CanopyKMeansJob.class);
-
-		job.setMapperClass(KMeansCentersMapper.class);
-		job.setReducerClass(KMeansCentersReducer.class);
-
-		SequenceFileInputFormat.addInputPath(job, vectors);
-		SequenceFileOutputFormat.setOutputPath(job, kMeansCentroids);
-
-		job.setOutputFormatClass(SequenceFileOutputFormat.class);
-
-		job.setOutputKeyClass(Vector.class);
-		job.setOutputValueClass(Vector.class);
-
-		job.setNumReduceTasks(1);
-
-		job.waitForCompletion(true);
-
-		// Prepare and start job #3 - KMeans Clustering (K iterations)
+		// Prepare and start job #2 - KMeans Clustering (K iterations)
 		int iteration = 1;
 		int counter = 0;
 
@@ -91,7 +65,7 @@ public class CanopyKMeansJob extends Configured implements Tool {
 			conf.set("iteration", iteration + "");
 
 			if (iteration != 1) {
-				conf.set("kmeans.centroids.path", basePath + "/depth_"
+				conf.set("canopy.centers.path", basePath + "/depth_"
 						+ (iteration - 1) + "/part-r-00000");
 			}
 
@@ -126,14 +100,14 @@ public class CanopyKMeansJob extends Configured implements Tool {
 					.findCounter(KMeansReducer.Counter.CONVERGED).getValue();
 		} while (counter > 0);
 
-		conf.set("kmeans.centroids.path", basePath + "/depth_"
+		conf.set("canopy.centers.path", basePath + "/depth_"
 				+ (iteration - 1) + "/part-r-00000");
 		out = new Path(basePath + "/output");
 
 		if (fs.exists(out))
 			fs.delete(out, true);
 
-		// Prepare and start job #4 - KMeans Output
+		// Prepare and start job #3 - KMeans Output
 		job = new Job(conf);
 		job.setJobName("KMeans Output");
 		job.setJarByClass(CanopyKMeansJob.class);

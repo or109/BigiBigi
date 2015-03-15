@@ -20,22 +20,32 @@ public class CanopyMapper extends Mapper<LongWritable, Text, Vector, Vector> {
 			context.write(new Vector(stock), new Vector(stock));
 		} else {
 			boolean isInCluster = false;
-
+			Vector bestCenter = null;
+			double bestDistance = Double.MAX_VALUE;
+			double currDistance;
+			
 			for (Vector currCenter : centers) {
+				currDistance = currCenter.measureDistance(stock);
+				
+				if (bestCenter == null) {
+					bestDistance = currDistance;
+					bestCenter = currCenter;
+				}
 				if (currCenter.measureDistance(stock) <= Integer
 						.parseInt(context.getConfiguration().get("radios"))) {
-					centers.add(new Vector(stock));
-					context.write(new Vector(currCenter), new Vector(stock));
-					isInCluster = true;
 
-					break;
+					if (currDistance < bestDistance) {
+						isInCluster = true;
+						bestDistance = currDistance;
+						bestCenter = currCenter;
+					}
 				}
 			}
-
 			if (!isInCluster) {
 				centers.add(new Vector(stock));
-				context.write(new Vector(stock), new Vector(stock));
+				bestCenter = stock;
 			}
+			context.write(new Vector(bestCenter), new Vector(stock));
 		}
 	}
 
